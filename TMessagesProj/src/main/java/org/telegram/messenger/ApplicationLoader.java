@@ -373,11 +373,7 @@ public class ApplicationLoader extends Application {
         }
         if (enabled) {
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && NekoConfig.residentNotification) {
-                    applicationContext.startForegroundService(new Intent(applicationContext, NotificationsService.class));
-                } else {
-                    applicationContext.startService(new Intent(applicationContext, NotificationsService.class));
-                }
+                applicationContext.startService(new Intent(applicationContext, NotificationsService.class));
             } catch (Throwable ignore) {
 
             }

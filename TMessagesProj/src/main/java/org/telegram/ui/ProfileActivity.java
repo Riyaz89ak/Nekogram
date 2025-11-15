@@ -4549,7 +4549,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 SharedConfig.inappCamera ? getString("DebugMenuDisableCamera", R.string.DebugMenuDisableCamera) : getString("DebugMenuEnableCamera", R.string.DebugMenuEnableCamera),
                                 getString("DebugMenuClearMediaCache", R.string.DebugMenuClearMediaCache),
                                 getString(R.string.DebugMenuCallSettings),
-                                Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM ? null : NekoConfig.residentNotification ? getString(R.string.DisableResidentNotification) : getString(R.string.EnableResidentNotification),
+                                null,
                                 BuildVars.DEBUG_PRIVATE_VERSION || ApplicationLoader.isStandaloneBuild() || ApplicationLoader.isBetaBuild() ? getString("DebugMenuCheckAppUpdate", R.string.DebugMenuCheckAppUpdate) : null,
                                 getString("DebugMenuReadAllDialogs", R.string.DebugMenuReadAllDialogs),
                                 BuildVars.DEBUG_PRIVATE_VERSION ? (SharedConfig.disableVoiceAudioEffects ? "Enable voip audio effects" : "Disable voip audio effects") : null,
@@ -4650,8 +4650,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                                 editor.apply();
                             } else if (which == 7) { // Call settings
                                 VoIPHelper.showCallDebugSettings(getParentActivity());
-                            } else if (which == 8) {
-                                NekoConfig.toggleResidentNotification();
+                            } else if (which == 8) { // ?
+                                SharedConfig.toggleRoundCamera16to9();
                             } else if (which == 9) { // Check app update
                                 ((LaunchActivity) getParentActivity()).checkAppUpdate(true, null);
                             } else if (which == 10) { // Read all chats

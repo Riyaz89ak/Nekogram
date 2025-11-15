@@ -1,9 +1,7 @@
 package tw.nekomimi.nekogram;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,7 +11,6 @@ import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
 import org.telegram.messenger.BuildConfig;
 import org.telegram.messenger.FileLog;
-import org.telegram.messenger.NotificationsService;
 import org.telegram.messenger.R;
 import org.telegram.ui.ActionBar.Theme;
 
@@ -150,11 +147,6 @@ public class NekoConfig {
 
     public static boolean springAnimation = false;
 
-    public static boolean wsEnableTLS = true;
-    public static String wsDomain;
-
-    public static boolean residentNotification = false;
-
     public static boolean shouldNOTTrustMe = false;
 
     public static boolean isChineseUser = false;
@@ -185,7 +177,6 @@ public class NekoConfig {
             ignoreBlocked = preferences.getBoolean("ignoreBlocked2", false);
             tabletMode = preferences.getInt("tabletMode", TABLET_AUTO);
             nameOrder = preferences.getInt("nameOrder", 1);
-            residentNotification = Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM && preferences.getBoolean("residentNotification", false);
             showAddToSavedMessages = preferences.getBoolean("showAddToSavedMessages", true);
             showSetReminder = preferences.getBoolean("showSetReminder", false);
             showReport = preferences.getBoolean("showReport", false);
@@ -224,7 +215,6 @@ public class NekoConfig {
             accentAsNotificationColor = preferences.getBoolean("accentAsNotificationColor", false);
             silenceNonContacts = preferences.getBoolean("silenceNonContacts", false);
             showNoQuoteForward = preferences.getBoolean("showNoQuoteForward", false);
-            wsEnableTLS = preferences.getBoolean("wsEnableTLS", true);
             translationTarget = preferences.getString("translationTarget", "app");
             maxRecentStickers = preferences.getInt("maxRecentStickers", 20);
             disableJumpToNextChannel = preferences.getBoolean("disableJumpToNextChannel", false);
@@ -246,7 +236,6 @@ public class NekoConfig {
             downloadSpeedBoost = preferences.getInt("downloadSpeedBoost2", BOOST_NONE);
             showQrCode = preferences.getBoolean("showQrCode", false);
             showOpenIn = preferences.getBoolean("showOpenIn", false);
-            wsDomain = preferences.getString("wsDomain", "");
             hideStories = preferences.getBoolean("hideStories", false);
             quickForward = preferences.getBoolean("quickForward", false);
             springAnimation = preferences.getBoolean("springAnimation", false);
@@ -361,14 +350,6 @@ public class NekoConfig {
         SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekoconfig", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("externalTranslationProvider", externalTranslationProvider);
-        editor.apply();
-    }
-
-    public static void setWsDomain(String domain) {
-        wsDomain = domain;
-        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekoconfig", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("wsDomain", wsDomain);
         editor.apply();
     }
 
@@ -556,14 +537,6 @@ public class NekoConfig {
         editor.apply();
     }
 
-    public static void toggleWsEnableTLS() {
-        wsEnableTLS = !wsEnableTLS;
-        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekoconfig", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("wsEnableTLS", wsEnableTLS);
-        editor.apply();
-    }
-
     public static void toggleShowAddToSavedMessages() {
         showAddToSavedMessages = !showAddToSavedMessages;
         SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekoconfig", Activity.MODE_PRIVATE);
@@ -667,16 +640,6 @@ public class NekoConfig {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("nameOrder", nameOrder);
         editor.apply();
-    }
-
-    public static void toggleResidentNotification() {
-        residentNotification = !residentNotification;
-        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("nekoconfig", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("residentNotification", residentNotification);
-        editor.apply();
-        ApplicationLoader.applicationContext.stopService(new Intent(ApplicationLoader.applicationContext, NotificationsService.class));
-        ApplicationLoader.startPushService();
     }
 
     public static void setEventType(int type) {

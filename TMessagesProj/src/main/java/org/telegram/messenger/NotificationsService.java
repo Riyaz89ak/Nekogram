@@ -13,38 +13,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 
-import androidx.core.app.NotificationChannelCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
-import tw.nekomimi.nekogram.NekoConfig;
-
 public class NotificationsService extends Service {
 
     @Override
     public void onCreate() {
         super.onCreate();
         ApplicationLoader.postInitApplication();
-
-        if (NekoConfig.residentNotification) {
-            NotificationChannelCompat channel = new NotificationChannelCompat.Builder("nekogram", NotificationManagerCompat.IMPORTANCE_DEFAULT)
-                    .setName(LocaleController.getString(R.string.NekogramRunning))
-                    .setLightsEnabled(false)
-                    .setVibrationEnabled(false)
-                    .setSound(null, null)
-                    .build();
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.createNotificationChannel(channel);
-            startForeground(38264,
-                    new NotificationCompat.Builder(this, "nekogram")
-                            .setSmallIcon(R.drawable.notification)
-                            .setColor(NekoConfig.getNotificationColor())
-                            .setColorized(true)
-                            .setShowWhen(false)
-                            .setContentText(LocaleController.getString(R.string.NekogramRunning))
-                            .setCategory(NotificationCompat.CATEGORY_STATUS)
-                            .build());
-        }
     }
 
     @Override
