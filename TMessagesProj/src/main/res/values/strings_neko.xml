@@ -22,7 +22,7 @@
     <string name="NoQuoteForwardShort">No Sender</string>
     <string name="NoCaptionForwardShort">No Caption</string>
     <string name="Repeat">Repeat</string>
-    <string name="AddToSavedMessages">Save message</string>
+    <string name="AddToSavedMessages">Save Message</string>
     <string name="CreateMention">Create Mention</string>
     <string name="Prpr">Peropero</string>
     <string name="NekogramRunning">Nekogram is running</string>
@@ -30,10 +30,10 @@
     <string name="DependsOnDate">Depends on date</string>
     <string name="Christmas">Christmas</string>
     <string name="Valentine">Valentine\'s day</string>
-    <string name="DeleteDownloadedFile">Delete downloaded file</string>
+    <string name="DeleteDownloadedFile">Delete Downloaded File</string>
     <string name="TestBackendOn">This account will connect to the test backend.</string>
     <string name="TestBackendOff">This account will connect to the production backend.</string>
-    <string name="ViewHistory">View history</string>
+    <string name="ViewHistory">View History</string>
     <string name="Nya">Meow!</string>
     <string name="StickerSize">Sticker size</string>
     <string name="StickerSizeLeft">Small</string>
