@@ -7953,7 +7953,6 @@ public class ChatActivity extends BaseFragment implements
         }
 
         actionsButtonsLayout = new ChatActivityActionsButtonsLayout(context, resourceProvider, blurredBackgroundColorProvider, glassBackgroundDrawableFactory);
-        actionsButtonsLayout.setForwardButtonOnClickListener(v -> openForward(false));
         actionsButtonsLayout.setReplyButtonOnClickListener(v -> {
             MessageObject messageObject = null;
             for (int a = 1; a >= 0; a--) {
@@ -18960,6 +18959,16 @@ public class ChatActivity extends BaseFragment implements
                 ActionBarMenuItem shareItem = actionBar.createActionMode().getItem(share);
 
                 boolean noforwards = getMessagesController().isChatNoForwards(currentChat) || hasSelectedNoforwardsMessage();
+                if (actionsButtonsLayout != null) {
+                    actionsButtonsLayout.setForwardButtonDelegate(hasCaption, id -> {
+                        setForwardParams(id == ForwardItem.ID_FORWARD_NOQUOTE, id == ForwardItem.ID_FORWARD_NOCAPTION);
+                        openForward(false);
+                    });
+                    actionsButtonsLayout.setForwardButtonTextAndIcon(
+                            ForwardItem.getLastForwardOptionTitle(hasCaption, true),
+                            ForwardItem.getLastForwardOptionIcon(hasCaption)
+                    );
+                }
                 if (prevCantForwardCount == 0 && cantForwardMessagesCount != 0 || prevCantForwardCount != 0 && cantForwardMessagesCount == 0) {
                     forwardButtonAnimation = new AnimatorSet();
                     ArrayList<Animator> animators = new ArrayList<>();

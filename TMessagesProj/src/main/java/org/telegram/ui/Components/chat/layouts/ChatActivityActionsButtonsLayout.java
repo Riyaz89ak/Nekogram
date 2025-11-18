@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.LocaleController;
 import org.telegram.messenger.R;
+import org.telegram.ui.ActionBar.ActionBarMenuItem;
 import org.telegram.ui.ActionBar.Theme;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.LayoutHelper;
@@ -31,6 +32,7 @@ import org.telegram.ui.Components.chat.buttons.ChatActivityBlurredRoundButton;
 import me.vkryl.android.AnimatorUtils;
 import me.vkryl.android.animator.BoolAnimator;
 import me.vkryl.android.animator.FactorAnimator;
+import tw.nekomimi.nekogram.forward.ForwardItem;
 
 @SuppressLint("ViewConstructor")
 public class ChatActivityActionsButtonsLayout extends LinearLayout {
@@ -53,7 +55,6 @@ public class ChatActivityActionsButtonsLayout extends LinearLayout {
 
         forwardButton.button = ChatActivityBlurredRoundButton.create(context, blurredBackgroundDrawableViewFactory,
             colorProvider, resourcesProvider, 0);
-        forwardButton.button.setOnClickListener(v -> {});
         ScaleStateListAnimator.apply(forwardButton.button, .065f, 2f);
 
         addTextView(replyButton, LocaleController.getString(R.string.Reply), R.drawable.input_reply, false);
@@ -63,7 +64,7 @@ public class ChatActivityActionsButtonsLayout extends LinearLayout {
         setClipChildren(false);
 
         addView(replyButton.button, LayoutHelper.createLinear(0, 56, 1f, 1, 0, -1, 0));
-        addView(forwardButton.button, LayoutHelper.createLinear(0, 56, 1f, -1, 0, 1, 0));
+        addView(forwardButton.optionsView, LayoutHelper.createLinear(0, 56, 1f, -1, 0, 1, 0));
     }
 
     public void setReplyButtonOnClickListener(View.OnClickListener listener) {
@@ -90,6 +91,12 @@ public class ChatActivityActionsButtonsLayout extends LinearLayout {
         Drawable image = getContext().getResources().getDrawable(iconRes).mutate();
         image.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_glass_defaultIcon, resourcesProvider), PorterDuff.Mode.MULTIPLY));
         forwardButton.setCompoundDrawablesWithIntrinsicBounds(iconLeft ? image : null, null, iconLeft ? null : image, null);
+        if (button == this.forwardButton) {
+            var optionsView = new ActionBarMenuItem(getContext(), null, 0, 0);
+            optionsView.setSubMenuOpenSide(2);
+            optionsView.addView(button.button, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.CENTER));
+            button.optionsView = optionsView;
+        }
 
         button.textView = forwardButton;
         button.button.addView(forwardButton, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER));
@@ -112,9 +119,28 @@ public class ChatActivityActionsButtonsLayout extends LinearLayout {
         forwardButton.visibilityAnimator.setValue(visible, animated);
     }
 
+    public void setForwardButtonDelegate(boolean hasCaption, ActionBarMenuItem.ActionBarMenuItemDelegate delegate) {
+        ForwardItem.setupForwardItem(forwardButton.optionsView, false, false, hasCaption, resourcesProvider, delegate);
+        forwardButton.optionsView.setDelegate(id -> {
+            delegate.onItemClick(id);
+            ForwardItem.setLastForwardOption(id);
+        });
+        forwardButton.optionsView.setAdditionalYOffset(-AndroidUtilities.dp(157 - (!hasCaption ? 48 : 0)));
+        forwardButton.optionsView.setShowedFromBottom(true);
+    }
+
+    public void setForwardButtonTextAndIcon(String text, Drawable icon) {
+        forwardButton.textView.setText(text);
+        icon.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_glass_defaultIcon, resourcesProvider), PorterDuff.Mode.MULTIPLY));
+        forwardButton.textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+    }
+
     public void setForwardButtonEnabled(boolean enabled, boolean animated) {
         forwardButton.enabledAnimator.setValue(enabled, animated);
         forwardButton.button.setEnabled(enabled);
+        forwardButton.optionsView.setEnabled(enabled);
+        forwardButton.optionsView.setLongClickEnabled(enabled);
+        forwardButton.optionsView.setShowSubmenuByMove(enabled);
     }
 
 
@@ -163,6 +189,7 @@ public class ChatActivityActionsButtonsLayout extends LinearLayout {
     private class ButtonHolder implements FactorAnimator.Target {
         public ChatActivityBlurredRoundButton button;
         public TextView textView;
+        public ActionBarMenuItem optionsView;
 
         public BoolAnimator visibilityAnimator = new BoolAnimator(0, this, CubicBezierInterpolator.EASE_OUT_QUINT, 350, true);
         public BoolAnimator enabledAnimator = new BoolAnimator(1, this, CubicBezierInterpolator.EASE_OUT_QUINT, 350, true);
