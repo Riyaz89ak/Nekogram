@@ -203,7 +203,7 @@ public class ProfileGooeyView extends FrameLayout {
 
         @Override
         public void draw(Drawer drawer, Canvas canvas) {
-            if (bitmap == null) return;
+            if (bitmap == null || bitmap.isRecycled()) return;
 
             final float v = (MathUtils.clamp(blurIntensity, 0.2f, 0.3f) - 0.2f) / (0.3f - 0.2f);
             final int alpha = (int) ((1f - v) * 0xFF);

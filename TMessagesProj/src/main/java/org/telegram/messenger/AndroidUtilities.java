@@ -289,7 +289,7 @@ public class AndroidUtilities {
     public static boolean incorrectDisplaySizeFix;
     public static Integer photoSize = null, highQualityPhotoSize = null;
     public static DisplayMetrics displayMetrics = new DisplayMetrics();
-    public static int leftBaseline;
+    public static int leftBaseline = 72;
     public static boolean usingHardwareInput;
     public static boolean isInMultiwindow;
 
@@ -376,7 +376,6 @@ public class AndroidUtilities {
     }
 
     static {
-        leftBaseline = isTablet() ? 80 : 72;
         checkDisplaySize(ApplicationLoader.applicationContext, null);
     }
 
@@ -2897,6 +2896,7 @@ public class AndroidUtilities {
     public static boolean isTabletInternal() {
         if (isTablet == null) {
             isTablet = isTabletForce();
+            leftBaseline = isTablet ? 80 : 72;
         }
         return isTablet;
     }
