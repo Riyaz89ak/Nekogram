@@ -6,6 +6,7 @@ import static org.telegram.messenger.LocaleController.getString;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -20,9 +21,11 @@ import android.graphics.RectF;
 import android.graphics.RenderNode;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.StateSet;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -462,7 +465,7 @@ public class ProfileActionsView extends View {
             }
         }
 
-        drawRipple(canvas, action, alpha);
+        drawRipple(canvas, action, alpha, isButtonColorLight && parentExpanded < 0.5f);
         canvas.restore();
         drawLoading(canvas, action, alpha);
     }
@@ -512,8 +515,19 @@ public class ProfileActionsView extends View {
         }
     }
 
-    private void drawRipple(Canvas canvas, Action action, float alpha) {
+    private final ColorStateList rippleColorDark = new ColorStateList(
+            new int[][]{ StateSet.WILD_CARD },
+            new int[]{ Theme.getColor(Theme.key_listSelector) }
+    );
+
+    private final ColorStateList rippleColorLight = new ColorStateList(
+            new int[][]{ StateSet.WILD_CARD },
+            new int[]{ Theme.multAlpha(Theme.getColor(Theme.key_windowBackgroundWhite), 0.45f) }
+    );
+
+    private void drawRipple(Canvas canvas, Action action, float alpha, boolean light) {
         action.rect.round(AndroidUtilities.rectTmp2);
+        action.rippleDrawable.setColor(light ? rippleColorDark : rippleColorLight);
         action.rippleDrawable.setBounds(AndroidUtilities.rectTmp2);
         action.rippleDrawable.setAlpha((int) (0xFF * alpha));
         action.rippleDrawable.draw(canvas);
@@ -1062,7 +1076,7 @@ public class ProfileActionsView extends View {
         int iconTranslationY = 0;
         float iconScale = 1f;
 
-        Drawable rippleDrawable = Theme.AdaptiveRipple.createRect(0, Theme.multAlpha(Theme.getColor(Theme.key_windowBackgroundWhite), 0.45f), 10);
+        RippleDrawable rippleDrawable = (RippleDrawable) Theme.AdaptiveRipple.createRect(0, Theme.multAlpha(Theme.getColor(Theme.key_windowBackgroundWhite), 0.45f), 16);
         LoadingDrawable loadingDrawable;
         boolean isLoading;
         boolean supportsLoading;
