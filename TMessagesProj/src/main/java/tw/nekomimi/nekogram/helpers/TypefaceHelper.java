@@ -1,14 +1,23 @@
 package tw.nekomimi.nekogram.helpers;
 
+import static org.telegram.messenger.AndroidUtilities.dp;
+import static org.telegram.messenger.LocaleController.getString;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.LeadingMarginSpan;
 
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.FileLog;
 import org.telegram.messenger.LocaleController;
+import org.telegram.messenger.R;
+import org.telegram.ui.ActionBar.Theme;
+import org.telegram.ui.Components.TypefaceSpan;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -52,6 +61,13 @@ public class TypefaceHelper {
         } else {
             TEST_TEXT = "R";
         }
+    }
+
+    public static SpannableStringBuilder getTitleText() {
+        var builder = new SpannableStringBuilder(getString(R.string.AppName));
+        builder.setSpan(new LeadingMarginSpan.Standard(dp(2), 0), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new TypefaceSpan(TypefaceHelper.createTypeface(600, false), 0, Theme.key_telegram_color_dialogsLogo, null), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
     }
 
     public static Typeface getSystemEmojiTypeface() {
