@@ -271,6 +271,7 @@ import tw.nekomimi.nekogram.forward.SendOptionsMenuLayout;
 import tw.nekomimi.nekogram.helpers.PasscodeHelper;
 import me.vkryl.android.animator.BoolAnimator;
 import me.vkryl.android.animator.FactorAnimator;
+import tw.nekomimi.nekogram.helpers.PopupHelper;
 import tw.nekomimi.nekogram.helpers.TypefaceHelper;
 
 public class DialogsActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate, FloatingDebugProvider, FactorAnimator.Target, MainTabsActivity.TabFragmentDelegate {
@@ -13249,6 +13250,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                 io.add(R.drawable.msg_settings_old, getString(R.string.Settings), () -> {
                     presentFragment(new SettingsActivity());
                 });
+            }
+            if (NekoConfig.hideBottomNavigationBar) {
+                PopupHelper.fillAccountSelectorMenu(io, currentAccount, getParentActivity(), resourceProvider);
             }
 
             if (proxyMenuSubItem != null) {
