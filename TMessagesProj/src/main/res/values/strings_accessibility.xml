@@ -10,4 +10,6 @@
     <string name="AccShowValueChanges">Announce changes of value during manual changes</string>
     <string name="AccAnnounceFileProgress">Announce file progress</string>
     <string name="AccShowTranslatedLanguage">Show translated language</string>
+    <string name="AccAnnounceDialogType">Announce dialog type</string>
+    <string name="AccAnnounceDialogMuted">Announce dialog muted</string>
 </resources>

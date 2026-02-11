@@ -143,6 +143,7 @@ import java.util.Objects;
 import java.util.Stack;
 
 import tw.nekomimi.nekogram.NekoConfig;
+import tw.nekomimi.nekogram.accessibility.AccConfig;
 import tw.nekomimi.nekogram.helpers.MessageFilterHelper;
 
 public class DialogCell extends BaseCell implements StoriesListPlaceProvider.AvatarOverlaysView {
@@ -5248,8 +5249,10 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 sb.append(". ");
             }
             if (isTopic && forumTopic != null) {
-                sb.append(getString(R.string.AccDescrTopic));
-                sb.append(". ");
+                if (AccConfig.announceDialogType) {
+                    sb.append(getString(R.string.AccDescrTopic));
+                    sb.append(". ");
+                }
                 sb.append(forumTopic.title);
                 sb.append(". ");
             } else if (user != null) {
@@ -5258,9 +5261,11 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 } else if (UserObject.isAnonymous(user)) {
                     sb.append(getString(R.string.AnonymousForward));
                 } else {
-                    if (user.bot) {
-                        sb.append(getString(R.string.Bot));
-                        sb.append(". ");
+                    if (AccConfig.announceDialogType) {
+                        if (user.bot) {
+                            sb.append(getString(R.string.Bot));
+                            sb.append(". ");
+                        }
                     }
                     if (user.self) {
                         sb.append(getString(R.string.SavedMessages));
@@ -5270,12 +5275,14 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
                 }
                 sb.append(". ");
             } else if (chat != null) {
-                if (chat.broadcast) {
-                    sb.append(getString(R.string.AccDescrChannel));
-                } else {
-                    sb.append(getString(R.string.AccDescrGroup));
+                if (AccConfig.announceDialogType) {
+                    if (chat.broadcast) {
+                        sb.append(getString(R.string.AccDescrChannel));
+                    } else {
+                        sb.append(getString(R.string.AccDescrGroup));
+                    }
+                    sb.append(". ");
                 }
-                sb.append(". ");
                 sb.append(chat.title);
                 sb.append(". ");
             }
@@ -5284,7 +5291,7 @@ public class DialogCell extends BaseCell implements StoriesListPlaceProvider.Ava
             sb.append(getString(R.string.AccDescrVerified));
             sb.append(". ");
         }
-        if (dialogMuted) {
+        if (AccConfig.announceDialogMuted && dialogMuted) {
             sb.append(getString(R.string.AccDescrNotificationsMuted));
             sb.append(". ");
         }

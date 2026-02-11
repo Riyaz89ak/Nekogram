@@ -21,6 +21,9 @@ public class AccessibilitySettingsActivity extends BaseNekoSettingsActivity {
     private final int showValueChangesRow = rowId++;
     private final int timeBeforeAnnouncingOfSeekbarRow = rowId++;
 
+    private final int announceDialogTypeRow = rowId++;
+    private final int announceDialogMuted = rowId++;
+
     private final int announceFileProgressRow = rowId++;
     private final int showTranslatedLanguageRow = rowId++;
 
@@ -46,6 +49,11 @@ public class AccessibilitySettingsActivity extends BaseNekoSettingsActivity {
         items.add(TextSettingsCellFactory.of(timeBeforeAnnouncingOfSeekbarRow, LocaleController.getString(R.string.AccTimeBeforeAnnouncingOfChangingOfValueOfSeekbar), getTimeBeforeAnnouncingOfSeekbar()));
         items.add(UItem.asShadow(null));
 
+        items.add(UItem.asHeader(LocaleController.getString(R.string.Chats)));
+        items.add(UItem.asCheck(announceDialogTypeRow, LocaleController.getString(R.string.AccAnnounceDialogType)).setChecked(AccConfig.announceDialogType));
+        items.add(UItem.asCheck(announceDialogMuted, LocaleController.getString(R.string.AccAnnounceDialogType)).setChecked(AccConfig.announceDialogType));
+        items.add(UItem.asShadow(null));
+
         items.add(UItem.asCheck(announceFileProgressRow, LocaleController.getString(R.string.AccAnnounceFileProgress)).setChecked(AccConfig.announceFileProgress));
         items.add(UItem.asCheck(showTranslatedLanguageRow, LocaleController.getString(R.string.AccShowTranslatedLanguage)).setChecked(AccConfig.showTranslatedLanguage));
         items.add(UItem.asShadow(null));
@@ -62,13 +70,7 @@ public class AccessibilitySettingsActivity extends BaseNekoSettingsActivity {
                         item.textValue = getTimeBeforeAnnouncingOfSeekbar();
                         listView.adapter.notifyItemChanged(position);
                     }, resourcesProvider);
-        } else if (id == showNumbersOfItemsRow ||
-                id == showIndexOfItemRow ||
-                id == showValueChangesRow ||
-                id == announceFileProgressRow ||
-                id == showTranslatedLanguageRow
-        ) {
-            var cell = (TextCheckCell) view;
+        } else if (view instanceof TextCheckCell cell) {
             if (id == showNumbersOfItemsRow) {
                 AccConfig.saveShowNumbersOfItems();
                 cell.setChecked(AccConfig.showNumbersOfItems);
@@ -84,6 +86,12 @@ public class AccessibilitySettingsActivity extends BaseNekoSettingsActivity {
             } else if (id == showTranslatedLanguageRow) {
                 AccConfig.toggleShowTranslatedLanguage();
                 cell.setChecked(AccConfig.showTranslatedLanguage);
+            } else if (id == announceDialogTypeRow) {
+                AccConfig.toggleAnnounceDialogType();
+                cell.setChecked(AccConfig.announceDialogType);
+            } else if (id == announceDialogMuted) {
+                AccConfig.toggleAnnounceDialogMuted();
+                cell.setChecked(AccConfig.announceDialogMuted);
             }
         }
     }

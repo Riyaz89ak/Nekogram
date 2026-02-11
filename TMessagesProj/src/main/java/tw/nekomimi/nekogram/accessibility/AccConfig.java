@@ -22,6 +22,8 @@ public class AccConfig {
 
     public static boolean announceFileProgress = true;
     public static boolean showTranslatedLanguage = true;
+    public static boolean announceDialogType = false;
+    public static boolean announceDialogMuted = true;
 
     private static boolean configLoaded;
 
@@ -43,6 +45,8 @@ public class AccConfig {
 
             announceFileProgress = preferences.getBoolean("announceFileProgress", true);
             showTranslatedLanguage = preferences.getBoolean("showTranslatedLanguage", true);
+            announceDialogType = preferences.getBoolean("announceDialogType", false);
+            announceDialogMuted = preferences.getBoolean("announceDialogMuted", true);
 
             configLoaded = true;
         }
@@ -88,5 +92,19 @@ public class AccConfig {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("showTranslatedLanguage", !showTranslatedLanguage).apply();
         showTranslatedLanguage = !showTranslatedLanguage;
+    }
+
+    public static void toggleAnnounceDialogType() {
+        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("accconfig", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("announceDialogType", !announceDialogType).apply();
+        announceDialogType = !announceDialogType;
+    }
+
+    public static void toggleAnnounceDialogMuted() {
+        SharedPreferences preferences = ApplicationLoader.applicationContext.getSharedPreferences("accconfig", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("announceDialogMuted", !announceDialogMuted).apply();
+        announceDialogMuted = !announceDialogMuted;
     }
 }
