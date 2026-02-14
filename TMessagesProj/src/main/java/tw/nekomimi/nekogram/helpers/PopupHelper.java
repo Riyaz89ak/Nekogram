@@ -195,6 +195,7 @@ public class PopupHelper {
     public static void fillAccountSelectorMenu(ItemOptions menu, int currentAccount, Context context, Theme.ResourcesProvider resourcesProvider) {
         var accountNumbers = new ArrayList<Integer>();
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
+            if (PasscodeHelper.isAccountHidden(a)) continue;
             if (UserConfig.getInstance(a).isClientActivated()) {
                 accountNumbers.add(a);
             }
