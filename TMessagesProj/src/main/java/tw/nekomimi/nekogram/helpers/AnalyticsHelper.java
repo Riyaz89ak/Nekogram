@@ -54,7 +54,7 @@ public class AnalyticsHelper {
             options.setEnableUserInteractionTracing(true);
             options.setAttachViewHierarchy(true);
             options.setEnableSystemEventBreadcrumbsExtras(true);
-            options.setTracesSampleRate(0.1);
+            options.setTracesSampleRate(0.01);
         });
         var user = new User();
         user.setId(userId);
