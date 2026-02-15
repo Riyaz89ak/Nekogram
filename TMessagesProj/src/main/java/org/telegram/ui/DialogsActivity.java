@@ -3793,6 +3793,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
                 @Override
                 public void onTabSelected(FilterTabsView.Tab tab, boolean forward, boolean animated) {
+                    if (actionBar == null) {
+                        return;
+                    }
                     if (NekoConfig.tabsTitleType != NekoConfig.TITLE_TYPE_ICON) {
                         if (lastTitleType == NekoConfig.TITLE_TYPE_ICON) {
                             actionBar.setTitle(actionBarDefaultTitle);
@@ -6894,7 +6897,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
 
                 filterTabsView.resetTabId();
 
-                if (!actionBarDefaultTitle.equals(actionBar.getTitle())) {
+                if (actionBarDefaultTitle != null && !actionBarDefaultTitle.equals(actionBar.getTitle())) {
                     if (animated) {
                         actionBar.setTitleAnimatedX(actionBarDefaultTitle, statusDrawable, false, 200);
                     } else {
