@@ -5574,7 +5574,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         idTextView.setVisibility(NekoConfig.idType == NekoConfig.ID_TYPE_HIDDEN ? View.GONE : View.VISIBLE);
         idTextView.setFactory(() -> {
             SimpleTextView view = new SimpleTextView(context);
-            view.setTextColor(applyPeerColor(getThemedColor(Theme.key_avatar_subtitleInProfileBlue), true, null));
+            view.setTextColor(applyPeerColor(getThemedColor(Theme.key_actionBarDefaultSubtitle), true, false));
             view.setTextSize(14);
             view.setGravity(Gravity.LEFT);
             view.setPadding(AndroidUtilities.dp(4), AndroidUtilities.dp(2), AndroidUtilities.dp(4), AndroidUtilities.dp(2));
@@ -6322,7 +6322,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             statusColor = getThemedColor(Theme.key_actionBarDefaultSubtitle);
         }
         onlineTextView[1].setTextColor(ColorUtils.blendARGB(applyPeerColor(statusColor, true, online), 0xB3FFFFFF, value));
-        idTextView.setTextColor(ColorUtils.blendARGB(applyPeerColor(getThemedColor(Theme.key_avatar_subtitleInProfileBlue), true, false), 0xB3FFFFFF, value));
+        idTextView.setTextColor(ColorUtils.blendARGB(applyPeerColor(getThemedColor(Theme.key_actionBarDefaultSubtitle), true, false), 0xB3FFFFFF, value));
         if (extraHeight > getHeaderOnlyExtraHeight()) {
             nameTextView[1].setPivotY(AndroidUtilities.lerp(0, nameTextView[1].getMeasuredHeight(), value));
             nameTextView[1].setScaleX(AndroidUtilities.lerp(1f + 0.12f * diff, 1.38f, value));
@@ -9742,13 +9742,6 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             onlineTextView[i].setTextColor(ColorUtils.blendARGB(i == 0 ? subtitleColor : applyPeerColor(subtitleColor, true, isOnline[0]), i == 0 ? color : applyPeerColor(color, true, isOnline[0]), progress));
         }
 
-        color = AvatarDrawable.getProfileTextColorForId(userId != 0 || ChatObject.isChannel(chatId, currentAccount) && !currentChat.megagroup ? 5 : chatId, resourcesProvider);
-        subtitleColor = getThemedColor(Theme.key_actionBarDefaultSubtitle);
-
-        if (idTextView != null && playProfileAnimation != 2) {
-            idTextView.setTextColor(ColorUtils.blendARGB(applyPeerColor(subtitleColor, true, false), applyPeerColor(color, true, false), progress));
-        }
-
         extraHeight = initialAnimationExtraHeight * progress;
         color = AvatarDrawable.getProfileColorForId(userId != 0 ? userId : chatId, resourcesProvider);
         int color2 = AvatarDrawable.getColorForId(userId != 0 ? userId : chatId);
@@ -11244,7 +11237,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
                 if (idTextView != null) {
                     if (!isPulledDown) {
-                        idTextView.setTextColor(applyPeerColor(getThemedColor(Theme.key_avatar_subtitleInProfileBlue), true, false));
+                        idTextView.setTextColor(applyPeerColor(getThemedColor(Theme.key_actionBarDefaultSubtitle), true, false));
                     }
                 }
             }
@@ -11791,7 +11784,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             onlineTextView[1].setTextColor(ColorUtils.blendARGB(applyPeerColor(statusColor, true, isOnline[0]), 0xB3FFFFFF, currentExpandAnimatorValue));
         }
         if (idTextView != null) {
-            idTextView.setTextColor(applyPeerColor(getThemedColor(Theme.key_avatar_subtitleInProfileBlue), true, false));
+            idTextView.setTextColor(applyPeerColor(getThemedColor(Theme.key_actionBarDefaultSubtitle), true, false));
         }
         if (showStatusButton != null) {
             showStatusButton.setBackgroundColor(ColorUtils.blendARGB(Theme.multAlpha(Theme.adaptHSV(actionBarBackgroundColor, +0.18f, -0.1f), 0.5f), 0x23ffffff, currentExpandAnimatorValue));
@@ -15077,7 +15070,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     nameTextView[1].setTextColor(getThemedColor(Theme.key_profile_title));
                 }
                 if (idTextView != null) {
-                    idTextView.setTextColor(applyPeerColor(getThemedColor(Theme.key_avatar_subtitleInProfileBlue), true, false));
+                    idTextView.setTextColor(applyPeerColor(getThemedColor(Theme.key_actionBarDefaultSubtitle), true, false));
                 }
                 if (actionBar != null) {
                     actionBar.setItemsColor(peerColor != null ? Color.WHITE : getThemedColor(Theme.key_actionBarDefaultIcon), false);
