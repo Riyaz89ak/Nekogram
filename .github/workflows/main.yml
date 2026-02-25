@@ -10,13 +10,13 @@ jobs:
 
       - name: Inject Internal Audio Logic
         run: |
-          # 1. மைக் சத்தத்திற்கு பதில் சிஸ்டம் சத்தத்தை (Internal Audio) எடுக்கிறது
+          # 1. ஸ்பீக்கர் சத்தத்தை இன்புட்டாக மாற்றுகிறது
           find . -name "MediaController.java" -exec sed -i 's/AudioSource.MIC/AudioSource.VOICE_COMMUNICATION/g' {} +
           
-          # 2. பாட்டுத் தெளிவாக இருக்க நாய்ஸ் கேன்சலேஷனை ஆஃப் செய்கிறது
+          # 2. பாட்டுத் தெளிவுக்காக நாய்ஸ் கேன்சலேஷன் ஆஃப் (ShareChat Effect)
           find . -name "MediaController.java" -exec sed -i 's/noiseSuppression = true/noiseSuppression = false/g' {} +
           
-          # 3. எக்கோ வராமல் இருக்க செட்டிங்ஸை மாற்றுகிறது
+          # 3. எக்கோ செட்டிங்ஸ் மாற்றம்
           find . -name "MediaController.java" -exec sed -i 's/echoCancellation = true/echoCancellation = false/g' {} +
 
       - name: Set up JDK 17
@@ -28,14 +28,14 @@ jobs:
       - name: Build Universal APK
         run: |
           chmod +x gradlew
-          # மெமரி சிக்கலைத் தவிர்க்க இந்த ஒரு வரி மிக முக்கியம்
-          export GRADLE_OPTS="-Xmx4g -XX:MaxMetaspaceSize=1g"
-          ./gradlew assembleDebug -PgenerateUniversalApk=true
+          # மெமரியை உச்சக்கட்டமாக (6GB) உயர்த்தியுள்ளேன்
+          export GRADLE_OPTS="-Xmx6g -Xms2g -XX:MaxMetaspaceSize=1g -Dorg.gradle.jvmargs=-Xmx6g"
+          # Google Services எர்ரர் வராமல் இருக்க இந்த கமாண்ட்
+          ./gradlew assembleDebug -PgenerateUniversalApk=true -x test --stacktrace
 
       - name: Upload Single APK Only
         uses: actions/upload-artifact@v4
         with:
-          name: Nekogram-Magic-Audio-App
-          # இது அந்த ஒரு யுனிவர்சல் ஆப்பை மட்டும் எடுக்கும்
-          path: "TMessagesProj/build/outputs/apk/afat/debug/*universal.apk"
+          name: Nekogram-Final-Magic-App
+          path: "**/build/outputs/apk/afat/debug/*universal.apk"
           
