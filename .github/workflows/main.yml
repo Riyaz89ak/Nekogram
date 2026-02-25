@@ -1,0 +1,39 @@
+name: Build Nekogram Internal Audio
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inject Internal Audio Logic
+        run: |
+          # 1. மைக் சத்தத்திற்கு பதில் சிஸ்டம் சத்தத்தை (Internal Audio) எடுக்கிறது
+          find . -name "MediaController.java" -exec sed -i 's/AudioSource.MIC/AudioSource.VOICE_COMMUNICATION/g' {} +
+          
+          # 2. பாட்டுத் தெளிவாக இருக்க நாய்ஸ் கேன்சலேஷனை ஆஃப் செய்கிறது (ShareChat Effect)
+          find . -name "MediaController.java" -exec sed -i 's/noiseSuppression = true/noiseSuppression = false/g' {} +
+          
+          # 3. எக்கோ வராமல் இருக்க செட்டிங்ஸை மாற்றுகிறது
+          find . -name "MediaController.java" -exec sed -i 's/echoCancellation = true/echoCancellation = false/g' {} +
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build Universal APK
+        run: |
+          chmod +x gradlew
+          # நிக்கோகிராம் ஒரு முழுமையான ஆப்பை (Universal) உருவாக்க இந்த கமாண்ட் உதவும்
+          ./gradlew assembleDebug -PgenerateUniversalApk=true
+
+      - name: Upload Single APK Only
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nekogram-Magic-Audio-App
+          # இது 600 MB குப்பைகளைத் தவிர்த்து, அந்த ஒரு யுனிவர்சல் ஆப்பை மட்டும் சரியாக எடுக்கும்
+          path: "TMessagesProj/build/outputs/apk/afat/debug/*universal.apk"
