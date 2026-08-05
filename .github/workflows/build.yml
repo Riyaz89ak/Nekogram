@@ -79,9 +79,9 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew assembleArm64Debug
-          ./gradlew bundlePlay
-          ./gradlew sentryUploadSourceBundlePlay
+          ./gradlew assembleArm64Release
+#          ./gradlew bundlePlay
+#          ./gradlew sentryUploadSourceBundlePlay
 
       - name: Attest
         uses: actions/attest@v4
