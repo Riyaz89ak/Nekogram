@@ -79,7 +79,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew assembleDebug
+          ./gradlew assembleArm64Debug
           ./gradlew bundlePlay
           ./gradlew sentryUploadSourceBundlePlay
 
